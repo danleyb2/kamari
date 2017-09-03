@@ -4,7 +4,7 @@ package com.example.eva.kamari.core;
  * Created by danleyb2 on 8/12/17.
  */
 
-class Card {
+public class Card {
 
     private Rank rank;
     private Suit suit;
@@ -20,6 +20,10 @@ class Card {
 
     public Suit getSuit() {
         return suit;
+    }
+
+    public String getDrawableImage() {
+        return "";
     }
 
     @Override

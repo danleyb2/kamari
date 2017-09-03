@@ -12,7 +12,6 @@
         android:id="@+id/compCards"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="42dp"
         android:background="#99669900"
         android:orientation="horizontal"
         android:weightSum="1"
@@ -20,6 +19,7 @@
         android:layout_alignParentStart="true">
 
         <TextView
+            android:id="@+id/textViewOpName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/inHand"
@@ -36,13 +36,14 @@
             android:text="Cards in hand: " />
 
         <TextView
+            android:id="@+id/textViewOpCards"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/inHand"
+            android:text="20"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:text="20" />
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
@@ -55,7 +56,7 @@
         android:layout_centerHorizontal="true">
 
         <ImageView
-            android:id="@+id/cardDropped"
+            android:id="@+id/imageViewField"
             android:layout_width="90dp"
             android:layout_height="125dp"
             android:layout_alignParentStart="true"

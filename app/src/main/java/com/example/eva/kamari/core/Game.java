@@ -11,6 +11,8 @@ public class Game {
     private ArrayList<Player> players = new ArrayList<>();
     private Pack pack;
 
+    private ArrayList<Card> played = new ArrayList<>(54);
+
     public void init() {
         this.pack = new Pack();
         this.pack.shuffle();
@@ -22,6 +24,7 @@ public class Game {
             }
 
         }
+        played.add(pack.deal());
     }
 
     public void addPlayer(Player player) {
@@ -47,5 +50,9 @@ public class Game {
 
 
         return opponents;
+    }
+
+    public Card getJustPlayed() {
+        return played.get(played.size() - 1);
     }
 }

@@ -18,6 +18,10 @@ public class Player {
         return name;
     }
 
+    public int getNumCards() {
+        return numCards;
+    }
+
     public void give(Card card) {
         this.numCards++;
         this.hand[this.numCards] = card;
