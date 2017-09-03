@@ -19,7 +19,7 @@ public class Game {
         for (Player player :
                 players) {
 
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 3; i++) {
                 player.give(pack.deal());
             }
 
@@ -73,5 +73,9 @@ public class Game {
 
     public Pack getPack() {
         return pack;
+    }
+
+    public ArrayList<Card> getPlayed() {
+        return played;
     }
 }

@@ -1,8 +1,7 @@
 package com.example.eva.kamari;
 
-import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +10,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.eva.kamari.core.Card;
 import com.example.eva.kamari.core.Game;
+import com.example.eva.kamari.core.MyCard;
 import com.example.eva.kamari.core.Player;
 import com.example.eva.kamari.core.PlayerType;
 
@@ -27,6 +28,8 @@ public class SinglePlayer extends AppCompatActivity {
     private TextView textViewOpCards;
     private ImageView imageViewField;
     private ImageView imageViewDeck;
+    private CardsAdapter mAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,21 @@ public class SinglePlayer extends AppCompatActivity {
             }
         });
 
+
+        buttonPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ArrayList<MyCard> playSelection = mAdapter.getSelectedItems();
+
+                me.getHand().removeAll(playSelection);
+
+                mAdapter.notifyDataSetChanged();
+                game.getPlayed().addAll(playSelection);
+
+                draw();
+            }
+        });
 
     }
 
@@ -78,7 +96,12 @@ public class SinglePlayer extends AppCompatActivity {
 
         //Player me = game.getMePlayer();
 
-        CardsAdapter mAdapter = new CardsAdapter(this, me);
+        mAdapter = new CardsAdapter(this, me, new MyViewHolder.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MyCard myCard) {
+                draw();
+            }
+        });
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(
                 this, LinearLayoutManager.HORIZONTAL, false
         );
@@ -91,14 +114,12 @@ public class SinglePlayer extends AppCompatActivity {
 
 
     void initGame() {
-
         game = new Game();
 
         me = game.addPlayer("danleyb2", false);
         game.addPlayer(new Player("COMP", PlayerType.CPU, true));
 
         game.init();
-
         game.pickStarter();
     }
 }

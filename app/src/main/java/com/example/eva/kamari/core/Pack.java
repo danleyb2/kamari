@@ -1,5 +1,6 @@
 package com.example.eva.kamari.core;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -77,6 +78,9 @@ public class Pack {
 
     public static void main(String[] args) {
         System.out.println(Rank.Ace);
+
+        ArrayList<Card> arrayList = new ArrayList<>(54);
+        System.out.println(arrayList.size());
     }
 
 }

@@ -1,12 +1,12 @@
 package com.example.eva.kamari.core;
 
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Player {
     private String name;
-    private Card[] hand = new Card[52];
-    private int numCards = -1;
+    private ArrayList<Card> hand = new ArrayList<>(52);
+    // private int numCards = -1;
     private PlayerType type;
     private boolean isOpponent = true;
 
@@ -21,19 +21,23 @@ public class Player {
     }
 
     public int getNumCards() {
-        return numCards;
+        return hand.size();
     }
 
     public void give(Card card) {
-        this.numCards++;
-        this.hand[this.numCards] = card;
+        //this.numCards++;
+        if (isOpponent) {
+            this.hand.add(card);
+        } else {
+            this.hand.add(new MyCard(card));
+        }
     }
 
     public boolean isOpponent() {
         return isOpponent;
     }
 
-    public Card[] getHand() {
+    public ArrayList<Card> getHand() {
         return hand;
     }
 }
