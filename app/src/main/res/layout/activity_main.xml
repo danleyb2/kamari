@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.github.danleyb2.kamari.MainActivity">
+    android:background="@drawable/a"
+    tools:context="com.example.eva.kamari.MainActivity">
 
-    <include
-        layout="@layout/single_player"
-        android:layout_height="wrap_content"
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="#99669900"
+        android:clickable="true"
+        android:onClick="clicked"
+        android:text="  Choose your player  "
+        android:textSize="24sp" />
 
-        >
-    </include>
-
-</android.support.constraint.ConstraintLayout>
+    <ListView
+        android:layout_width="280dp"
+        android:layout_height="350dp"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="#99669900" />
+</RelativeLayout>
