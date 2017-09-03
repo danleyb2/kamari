@@ -1,6 +1,8 @@
 package com.example.eva.kamari.core;
 
 
+import java.util.List;
+
 public class Player {
     private String name;
     private Card[] hand = new Card[52];
@@ -29,5 +31,9 @@ public class Player {
 
     public boolean isOpponent() {
         return isOpponent;
+    }
+
+    public Card[] getHand() {
+        return hand;
     }
 }

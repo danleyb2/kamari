@@ -10,7 +10,7 @@ enum Suit {
     Clubs,
     Diamonds,
     Hearts,
-    Spades;
+    Spades
 }
 
 enum Rank {
@@ -26,10 +26,10 @@ enum Rank {
     Jack,
     Queen,
     King,
-    Ace;
+    Ace
 }
 
-class Pack {
+public class Pack {
 
     private int numCards = 52;
     private Card[] deck = new Card[numCards];
@@ -73,6 +73,10 @@ class Pack {
             deck[index] = deck[i];
             deck[i] = a;
         }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Rank.Ace);
     }
 
 }

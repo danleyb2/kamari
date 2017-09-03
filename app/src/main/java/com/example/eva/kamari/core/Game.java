@@ -31,8 +31,11 @@ public class Game {
         players.add(player);
     }
 
-    public void addPlayer(String playerName, boolean isOpponent) {
-        addPlayer(new Player(playerName, PlayerType.HUMAN, isOpponent));
+    public Player addPlayer(String playerName, boolean isOpponent) {
+        Player player = new Player(playerName, PlayerType.HUMAN, isOpponent);
+
+        addPlayer(player);
+        return player;
     }
 
     public void pickStarter() {
@@ -54,5 +57,21 @@ public class Game {
 
     public Card getJustPlayed() {
         return played.get(played.size() - 1);
+    }
+
+    public Player getMePlayer() {
+        for (Player pl :
+                players) {
+            if (!pl.isOpponent())
+                return pl;
+        }
+
+
+        // this should not happen
+        return null;
+    }
+
+    public Pack getPack() {
+        return pack;
     }
 }

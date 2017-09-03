@@ -66,7 +66,7 @@
             app:srcCompat="@drawable/cjc" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/imageViewDeck"
             android:layout_width="80dp"
             android:layout_height="125dp"
             android:layout_alignParentEnd="true"
@@ -83,39 +83,42 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"
+
         android:background="#99669900"
         android:orientation="horizontal">
 
-        <HorizontalScrollView
-            android:id="@+id/horizontalScrollView"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_cards"
+            android:scrollbars="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" />
 
-            <LinearLayout
-                android:id="@+id/scrollCards"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+        <!--<HorizontalScrollView-->
+        <!--android:id="@+id/horizontalScrollView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
 
-                <ImageView
-                    android:id="@+id/myCards"
-                    android:layout_width="80dp"
-                    android:layout_height="125dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:clickable="true"
-                    app:srcCompat="@drawable/card_back" />
-            </LinearLayout>
+        <!--<LinearLayout-->
+        <!--android:id="@+id/scrollCards"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="horizontal">-->
 
-        </HorizontalScrollView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Levanto" />
+        <!--</LinearLayout>-->
+
+        <!--</HorizontalScrollView>-->
 
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/buttonPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="22dp"
+        android:layout_marginEnd="15dp"
+        android:text="Play" />
 
 </RelativeLayout>
