@@ -40,4 +40,23 @@ public class Player {
     public ArrayList<Card> getHand() {
         return hand;
     }
+
+    public void playTurn(Game game) {
+        Card facing = game.getJustPlayed();
+        ArrayList<Card> play = new ArrayList<>();
+
+        for (Card card : getHand()) {
+            if (card.getRank() == facing.getRank()) {
+                play.add(card);
+            }
+        }
+
+        if (play.isEmpty()) {
+            give(game.getPack().deal());
+        } else {
+            getHand().removeAll(play);
+            game.playTurn(play, this);
+        }
+
+    }
 }

@@ -13,6 +13,9 @@ public class Game {
 
     private ArrayList<Card> played = new ArrayList<>(54);
 
+    private int activeTurn = 0;
+    private int direction = 1;
+
     public void init() {
         this.pack = new Pack();
         this.pack.shuffle();
@@ -24,6 +27,8 @@ public class Game {
             }
 
         }
+
+        //TODO 1. The starting card can be any except a A, 2, 3, 8, J, Q, K or a joker
         played.add(pack.deal());
     }
 
@@ -38,8 +43,12 @@ public class Game {
         return player;
     }
 
-    public void pickStarter() {
-        players.get(0);//.takeTurn();
+    public Player turn() {
+        this.activeTurn += direction;
+        if (this.activeTurn == players.size())
+            this.activeTurn = 0;
+
+        return players.get(this.activeTurn);
 
     }
 
@@ -77,5 +86,22 @@ public class Game {
 
     public ArrayList<Card> getPlayed() {
         return played;
+    }
+
+    public boolean playTurn(ArrayList<Card> playSelection, Player player) {
+        Card facing = this.getJustPlayed();
+
+        //todo now only support playing single cards
+        Card played = playSelection.get(0);
+
+        if (facing.getSuit() == played.getSuit()) {
+            return true;
+        }
+
+        if (facing.getRank() == played.getRank()) {
+            return true;
+        }
+
+        return false;
     }
 }

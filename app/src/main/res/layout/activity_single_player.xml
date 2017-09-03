@@ -119,6 +119,18 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="22dp"
         android:layout_marginEnd="15dp"
+        android:fontFamily="monospace"
         android:text="Play" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:fontFamily="monospace"
+        android:text="I Am Winning"
+        android:layout_alignBaseline="@+id/buttonPlay"
+        android:layout_alignBottom="@+id/buttonPlay"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

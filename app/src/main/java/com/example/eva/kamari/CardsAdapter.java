@@ -64,9 +64,9 @@ public class CardsAdapter extends RecyclerView.Adapter<MyViewHolder> implements 
         return player.getNumCards();
     }
 
-    public ArrayList<MyCard> getSelectedItems() {
+    public ArrayList<Card> getSelectedItems() {
 
-        ArrayList<MyCard> selectedItems = new ArrayList<>();
+        ArrayList<Card> selectedItems = new ArrayList<>();
         for (Card item : cardsList) {
             MyCard temp = (MyCard) item;
             if (temp.isSelected()) {

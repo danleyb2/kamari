@@ -43,29 +43,36 @@ public class SinglePlayer extends AppCompatActivity {
         imageViewDeck = (ImageView) findViewById(R.id.imageViewDeck);
 
         initGame();
-        draw();
 
         imageViewDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // todo just give me the right count of cards and move on,
+                // no need for the confirmation PLAY >
                 me.give(game.getPack().deal());
-                draw();
+                takeTurn();
             }
         });
-
 
         buttonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                ArrayList<MyCard> playSelection = mAdapter.getSelectedItems();
+                ArrayList<Card> playSelection = mAdapter.getSelectedItems();
 
                 me.getHand().removeAll(playSelection);
-
                 mAdapter.notifyDataSetChanged();
-                game.getPlayed().addAll(playSelection);
 
-                draw();
+                boolean played = game.playTurn(playSelection, me);
+                if (played) {
+                    game.getPlayed().addAll(playSelection);
+                } else {
+                    //TODO couldn't play, possibly wrong card, display appropriate error
+
+                    me.getHand().addAll(playSelection);
+                }
+                takeTurn();
             }
         });
 
@@ -83,8 +90,6 @@ public class SinglePlayer extends AppCompatActivity {
         //TODO draw player cards count
         textViewOpCards.setText(String.valueOf(opponent.getNumCards()));
 
-
-
         //TODO draw field
         imageViewField.setImageDrawable(Utils.loadDrawable(this, game.getJustPlayed().getDrawableImage()));
 
@@ -95,7 +100,6 @@ public class SinglePlayer extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_cards);
 
         //Player me = game.getMePlayer();
-
         mAdapter = new CardsAdapter(this, me, new MyViewHolder.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MyCard myCard) {
@@ -112,6 +116,17 @@ public class SinglePlayer extends AppCompatActivity {
 
     }
 
+    void takeTurn() {
+        Player aP = game.turn();
+        if (aP.isOpponent()) {
+            aP.playTurn(game);
+            draw();
+            takeTurn();
+        } else {
+            draw();
+        }
+    }
+
 
     void initGame() {
         game = new Game();
@@ -120,6 +135,7 @@ public class SinglePlayer extends AppCompatActivity {
         game.addPlayer(new Player("COMP", PlayerType.CPU, true));
 
         game.init();
-        game.pickStarter();
+        takeTurn();
+
     }
 }
