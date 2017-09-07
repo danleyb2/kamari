@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 
 public class SinglePlayer extends AppCompatActivity {
 
+    private static final String TAG = SinglePlayer.class.getSimpleName();
     private Game game;
     private Player me;
 
@@ -117,9 +119,14 @@ public class SinglePlayer extends AppCompatActivity {
     }
 
     void takeTurn() {
+        Log.i(TAG,"Take turn");
         Player aP = game.turn();
+        Log.i(TAG,"player -> "+ aP.getName());
+
         if (aP.isOpponent()) {
+            Log.i(TAG,"player is Opponent, getting AI play");
             aP.playTurn(game);
+
             draw();
             takeTurn();
         } else {
@@ -132,10 +139,25 @@ public class SinglePlayer extends AppCompatActivity {
         game = new Game();
 
         me = game.addPlayer("danleyb2", false);
+        me.setOnRequestCallback(new UserAction() {
+            @Override
+            public Card onRequestCard() {
+
+
+                // new FireMissilesDialogFragment().show();
+
+
+                return null;
+            }
+        });
+
         game.addPlayer(new Player("COMP", PlayerType.CPU, true));
 
         game.init();
         takeTurn();
 
     }
+
+
+
 }

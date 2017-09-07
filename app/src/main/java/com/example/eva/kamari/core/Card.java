@@ -94,4 +94,37 @@ public class Card {
         String s = rank + " of " + suit;
         return s;
     }
+
+    public Requirement[] getCardRequirement() {
+        // todo cache, stop processing every time
+        return Pack.getRequirements(this);
+    }
+
+    public int getAction() {
+        // if should pick
+        if (
+                this.rank == Rank.Ace||
+                this.rank == Rank.Jack||
+                this.rank == Rank.King||
+                this.rank == Rank.Two||
+                this.rank == Rank.Three||
+                this.rank == Rank.Queen
+
+                ){
+
+            return 0;
+
+        }else {
+            return 1;
+        }
+
+    }
+
+    public void getValidDeal() {
+
+    }
+
+    public void getCantDealAction() {
+
+    }
 }

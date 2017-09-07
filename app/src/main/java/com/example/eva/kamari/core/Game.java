@@ -1,5 +1,7 @@
 package com.example.eva.kamari.core;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -8,6 +10,8 @@ import java.util.ArrayList;
 
 public class Game {
 
+    private static final String TAG = Game.class.getSimpleName();
+
     private ArrayList<Player> players = new ArrayList<>();
     private Pack pack;
 
@@ -15,6 +19,7 @@ public class Game {
 
     private int activeTurn = 0;
     private int direction = 1;
+    private Card requestedCard = null;
 
     public void init() {
         this.pack = new Pack();
@@ -29,7 +34,28 @@ public class Game {
         }
 
         //TODO 1. The starting card can be any except a A, 2, 3, 8, J, Q, K or a joker
-        played.add(pack.deal());
+
+        Card cardStarting = pack.deal();
+        Log.i(TAG,"Starting card :"+cardStarting);
+        while (cardStarting.getRank() == Rank.Ace ||
+                cardStarting.getRank() == Rank.Two||
+                cardStarting.getRank() == Rank.Three ||
+                cardStarting.getRank() == Rank.Eight ||
+                cardStarting.getRank() == Rank.Jack ||
+                cardStarting.getRank() == Rank.Queen ||
+                cardStarting.getRank() == Rank.King ) {
+
+
+            Log.i(TAG,"!! Invalid Starting card :"+cardStarting);
+            Log.i(TAG,"Shifting pack and adding to bottom :");
+            pack.addToBottom(cardStarting);
+
+            cardStarting = pack.deal();
+            Log.i(TAG,"Starting card :"+cardStarting);
+        }
+
+
+        played.add(cardStarting);
     }
 
     public void addPlayer(Player player) {
@@ -89,10 +115,14 @@ public class Game {
     }
 
     public boolean playTurn(ArrayList<Card> playSelection, Player player) {
+        Log.i(TAG,"playSelection = [" + playSelection + "], player = [" + player + "]");
         Card facing = this.getJustPlayed();
+        Log.i(TAG,facing.toString());
 
         //todo now only support playing single cards
         Card played = playSelection.get(0);
+
+
 
         if (facing.getSuit() == played.getSuit()) {
             return true;
@@ -103,5 +133,21 @@ public class Game {
         }
 
         return false;
+    }
+
+    public void requestCard(Card cardRequest) {
+        this.requestedCard = cardRequest;
+    }
+
+    public Card requestedCard() {
+        return requestedCard;
+    }
+
+    public void jump() {
+        this.turn();
+    }
+
+    public void kickBack() {
+        this.direction*=-1;
     }
 }

@@ -46,7 +46,17 @@ public class Pack {
                 Rank.values()) {
             for (Suit s :
                     Suit.values()) {
-                deck[index] = new Card(r, s);
+
+                Card card = new Card(r, s);
+
+
+
+
+                deck[index] = card;
+
+
+
+
                 index++;
             }
         }
@@ -83,4 +93,34 @@ public class Pack {
         System.out.println(arrayList.size());
     }
 
+    public static Requirement[] getRequirements(Card card) {
+        Requirement[] requirements = new Requirement[9];
+
+        switch (card.getRank()){
+            case Ace:
+                break;
+            case Two:
+                Requirement tmp = new Requirement();
+                tmp.acceptsRank(Rank.Two);
+                requirements[0] = tmp;
+                break;
+        }
+
+
+        switch (card.getSuit()){
+            case Clubs:
+                Requirement tmp = new Requirement();
+                tmp.acceptsSuit(Suit.Clubs);
+                requirements[1] = tmp;
+                break;
+        }
+
+        return new Requirement[0];
+    }
+
+    public void addToBottom(Card card) {
+        System.arraycopy(deck, 0, deck, 1, deck.length-2);
+        deck[0] = card;
+
+    }
 }
