@@ -46,6 +46,15 @@ public class Player {
         return this.getName();
     }
 
+    public String dumpString() {
+        StringBuilder dumpStringB = new StringBuilder();
+        dumpStringB.append("Name: ").append(this.getName()).append("\n");
+        dumpStringB.append("Cards: ").append(this.getHand());
+
+        return dumpStringB.toString();
+    }
+
+
     public boolean isOpponent() {
         return isOpponent;
     }
@@ -145,8 +154,6 @@ public class Player {
 
         Log.i(TAG,"Rank Request: "+rankReq+", Suit Request: "+suitReq);
 
-
-
         ArrayList<Card> play = new ArrayList<>();
         for (Card card : getHand()) {
             if (card.getRank() == rankReq||card.getSuit()==suitReq) {
@@ -161,12 +168,37 @@ public class Player {
 
         if (play.isEmpty()) {
             Log.i(TAG,"Player decided to pick");
-            give(game.getPack().deal());
+            Card pickedCard = game.getPack().deal();
+            Log.i(TAG, "picked card: " + pickedCard);
+            give(pickedCard);
+            Log.i(TAG, printCards());
+
+
+
         } else {
             Log.i(TAG,"Player decided to deal ");
             getHand().removeAll(play);
-            game.playTurn(play, this);
+            if (game.playTurn(play, this) /*todo game.canPlayTurn(play, this)*/) {
+                Log.i(TAG, "Can Play: " + play);
+                game.getPlayed().addAll(play);
+
+            }
+
         }
+
+    }
+
+    private String printCards() {
+
+        StringBuilder cardS = new StringBuilder();
+        cardS.append("[ ");
+        for (Card card :
+                getHand()) {
+            cardS.append(card.toString()).append(" ");
+        }
+        cardS.append("]");
+
+        return cardS.toString();
 
     }
 

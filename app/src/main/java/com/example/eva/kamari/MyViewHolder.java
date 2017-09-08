@@ -37,10 +37,10 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
 
                 if (mCard.isSelected()) {
                     mCard.setSelected(false);
-                    cardView.setCardBackgroundColor(Color.WHITE);
+                    //cardView.setCardBackgroundColor(Color.WHITE);
                 } else {
                     mCard.setSelected(true);
-                    cardView.setCardBackgroundColor(Color.GREEN);
+                    //cardView.setCardBackgroundColor(Color.GREEN);
                 }
                 itemSelectedListener.onItemSelected(mCard);
 

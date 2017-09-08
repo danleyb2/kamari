@@ -24,7 +24,7 @@ public class CardsAdapter extends RecyclerView.Adapter<MyViewHolder> implements 
     private ArrayList<Card> cardsList;
     private Context context;
     private Player player;
-    MyViewHolder.OnItemSelectedListener listener;
+    private MyViewHolder.OnItemSelectedListener listener;
 
 
     public CardsAdapter(SinglePlayer context, Player player, MyViewHolder.OnItemSelectedListener listener) {
@@ -54,6 +54,9 @@ public class CardsAdapter extends RecyclerView.Adapter<MyViewHolder> implements 
 
         if (((MyCard) card).isSelected()) {
             holder.getCardView().setCardBackgroundColor(Color.GREEN);
+        } else {
+            holder.getCardView().setCardBackgroundColor(Color.WHITE);
+
         }
 
 

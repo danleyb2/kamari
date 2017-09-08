@@ -52,7 +52,9 @@ public class SinglePlayer extends AppCompatActivity {
 
                 // todo just give me the right count of cards and move on,
                 // no need for the confirmation PLAY >
-                me.give(game.getPack().deal());
+                Card dealt = game.getPack().deal();
+                Log.i(TAG, "card pick: " + dealt);
+                me.give(dealt);
                 takeTurn();
             }
         });
@@ -81,11 +83,18 @@ public class SinglePlayer extends AppCompatActivity {
     }
 
 
-    void draw() {
+    void draw(boolean isUpdate) {
+        Log.i(TAG, "[-] Drawing game     ***        [-]");
+
+        Log.i(TAG, "me " + me.dumpString());
 
         //TODO draw player
         // for now it's just one play
         ArrayList<Player> opponents = game.getOpponents();
+        for (Player player : opponents) {
+            Log.i(TAG, "\topponent " + player.dumpString());
+        }
+
         Player opponent = opponents.get(0);
         textViewOpName.setText(opponent.getName());
 
@@ -99,43 +108,53 @@ public class SinglePlayer extends AppCompatActivity {
         // how does an empty deck look?
 
         //TODO draw cards in hand
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_cards);
-
         //Player me = game.getMePlayer();
-        mAdapter = new CardsAdapter(this, me, new MyViewHolder.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(MyCard myCard) {
-                draw();
-            }
-        });
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(
-                this, LinearLayoutManager.HORIZONTAL, false
-        );
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
+        if (!isUpdate) {
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_cards);
+
+            mAdapter = new CardsAdapter(this, me, new MyViewHolder.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(MyCard myCard) {
+                    draw(true);
+                }
+            });
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(
+                    this, LinearLayoutManager.HORIZONTAL, false
+            );
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
+        }
 
 
     }
 
     void takeTurn() {
-        Log.i(TAG,"Take turn");
         Player aP = game.turn();
-        Log.i(TAG,"player -> "+ aP.getName());
+
+        // todo Log.i(ap.validPlays());
+
+        Log.e(TAG, "[-] Take turn *********************[" + aP.getName() + "]**********************[-]");
+
 
         if (aP.isOpponent()) {
             Log.i(TAG,"player is Opponent, getting AI play");
             aP.playTurn(game);
 
-            draw();
+            draw(true);
             takeTurn();
         } else {
-            draw();
+            draw(true);
         }
     }
 
 
     void initGame() {
+        Log.i(TAG, "[-]----------------------------------------------------------------------");
+        Log.i(TAG, "[-]\t\t\t  ... KAMARI ....");
+        Log.i(TAG, "[-] Welcome to KAMARI ... ##################################### initializing [-]");
         game = new Game();
 
         me = game.addPlayer("danleyb2", false);
@@ -154,6 +173,7 @@ public class SinglePlayer extends AppCompatActivity {
         game.addPlayer(new Player("COMP", PlayerType.CPU, true));
 
         game.init();
+        draw(false);
         takeTurn();
 
     }

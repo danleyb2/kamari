@@ -23,7 +23,10 @@ public class Game {
 
     public void init() {
         this.pack = new Pack();
+        Log.i(TAG, "Shuffling pack ");
         this.pack.shuffle();
+
+        Log.i(TAG, "Assigning initial cards to players");
         for (Player player :
                 players) {
 
@@ -31,6 +34,7 @@ public class Game {
                 player.give(pack.deal());
             }
 
+            Log.i(TAG, player.dumpString());
         }
 
         //TODO 1. The starting card can be any except a A, 2, 3, 8, J, Q, K or a joker
@@ -117,7 +121,7 @@ public class Game {
     public boolean playTurn(ArrayList<Card> playSelection, Player player) {
         Log.i(TAG,"playSelection = [" + playSelection + "], player = [" + player + "]");
         Card facing = this.getJustPlayed();
-        Log.i(TAG,facing.toString());
+        Log.i(TAG, "facing Card: " + facing.toString());
 
         //todo now only support playing single cards
         Card played = playSelection.get(0);

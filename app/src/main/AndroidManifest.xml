@@ -13,7 +13,7 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity
-            android:theme="@style/NoActionBar"
+            android:theme="@style/NoActionBar.FullScreen"
             android:name=".SinglePlayer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
