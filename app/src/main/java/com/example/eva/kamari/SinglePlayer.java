@@ -16,6 +16,7 @@ import com.example.eva.kamari.core.Game;
 import com.example.eva.kamari.core.MyCard;
 import com.example.eva.kamari.core.Player;
 import com.example.eva.kamari.core.PlayerType;
+import com.example.eva.kamari.core.Rank;
 
 import java.util.ArrayList;
 
@@ -73,6 +74,7 @@ public class SinglePlayer extends AppCompatActivity {
                     game.getPlayed().addAll(playSelection);
                 } else {
                     //TODO couldn't play, possibly wrong card, display appropriate error
+                    Log.e(TAG, "[*] Could not play: " + playSelection);
 
                     me.getHand().addAll(playSelection);
                 }
@@ -147,6 +149,25 @@ public class SinglePlayer extends AppCompatActivity {
             takeTurn();
         } else {
             draw(true);
+            // waiting for me to take turn
+            // todo pre-process player actions,
+            // e.g pick me cards
+            Card jP = game.getJustPlayed();
+            if (jP.getRank() == Rank.Two) {
+
+                me.give(game.getPack().deal());
+                me.give(game.getPack().deal());
+
+                takeTurn();
+            }
+            if (jP.getRank() == Rank.Three) {
+                me.give(game.getPack().deal());
+                me.give(game.getPack().deal());
+                me.give(game.getPack().deal());
+
+                takeTurn();
+            }
+
         }
     }
 

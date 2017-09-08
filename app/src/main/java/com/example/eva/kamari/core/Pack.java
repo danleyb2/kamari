@@ -3,33 +3,6 @@ package com.example.eva.kamari.core;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created by danleyb2 on 8/12/17.
- */
-
-enum Suit {
-    Clubs,
-    Diamonds,
-    Hearts,
-    Spades
-}
-
-enum Rank {
-    Two,
-    Three,
-    Four,
-    Five,
-    Six,
-    Seven,
-    Eight,
-    Nine,
-    Ten,
-    Jack,
-    Queen,
-    King,
-    Ace
-}
-
 public class Pack {
 
     private int numCards = 52;
