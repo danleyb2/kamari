@@ -55,7 +55,7 @@ public class Game {
             pack.addToBottom(cardStarting);
 
             cardStarting = pack.deal();
-            Log.i(TAG,"Starting card :"+cardStarting);
+            Log.i(TAG, "New Starting card :" + cardStarting);
         }
 
 
