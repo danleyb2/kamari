@@ -15,7 +15,7 @@ public class Game {
     private ArrayList<Player> players = new ArrayList<>();
     private Pack pack;
 
-    private ArrayList<Card> played = new ArrayList<>(54);
+    private ArrayList<Play> played = new ArrayList<>();
 
     private int activeTurn = 0;
     private int direction = 1;
@@ -58,8 +58,10 @@ public class Game {
             Log.i(TAG, "New Starting card :" + cardStarting);
         }
 
+        ArrayList<Card> playS = new ArrayList<>();
+        playS.add(cardStarting);
 
-        played.add(cardStarting);
+        played.add(new Play(playS, PlayAction.START));
     }
 
     public void addPlayer(Player player) {
@@ -75,7 +77,7 @@ public class Game {
 
     public Player turn() {
         this.activeTurn += direction;
-        if (this.activeTurn == players.size())
+        if (Math.abs(this.activeTurn) == players.size())
             this.activeTurn = 0;
 
         return players.get(this.activeTurn);
@@ -95,6 +97,11 @@ public class Game {
     }
 
     public Card getJustPlayed() {
+        Play lastPlay = played.get(played.size() - 1);
+        return lastPlay.getLastCard();
+    }
+
+    public Play getLastPlay() {
         return played.get(played.size() - 1);
     }
 
@@ -114,7 +121,7 @@ public class Game {
         return pack;
     }
 
-    public ArrayList<Card> getPlayed() {
+    public ArrayList<Play> getPlayed() {
         return played;
     }
 
@@ -153,5 +160,18 @@ public class Game {
 
     public void kickBack() {
         this.direction*=-1;
+    }
+
+
+    public String historyLog() {
+        StringBuilder plS = new StringBuilder();
+
+        for (Play pl :
+                getPlayed()) {
+            plS.append(pl).append("\n");
+
+        }
+
+        return plS.toString();
     }
 }

@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.example.eva.kamari.core.Card;
 import com.example.eva.kamari.core.Game;
 import com.example.eva.kamari.core.MyCard;
+import com.example.eva.kamari.core.Play;
+import com.example.eva.kamari.core.PlayAction;
 import com.example.eva.kamari.core.Player;
 import com.example.eva.kamari.core.PlayerType;
 import com.example.eva.kamari.core.Rank;
@@ -71,9 +73,9 @@ public class SinglePlayer extends AppCompatActivity {
 
                 boolean played = game.playTurn(playSelection, me);
                 if (played) {
-                    game.getPlayed().addAll(playSelection);
+                    game.getPlayed().add(new Play(playSelection, me, PlayAction.GIVE));
                 } else {
-                    //TODO couldn't play, possibly wrong card, display appropriate error
+                    // TODO couldn't play, possibly wrong card, display appropriate error
                     Log.e(TAG, "[*] Could not play: " + playSelection);
 
                     me.getHand().addAll(playSelection);
@@ -130,43 +132,58 @@ public class SinglePlayer extends AppCompatActivity {
             mAdapter.notifyDataSetChanged();
         }
 
+        Log.i(TAG, game.historyLog());
+
 
     }
 
+    /**
+     * This is the game loop, a recursive calls that stops then the turn player is not COMP
+     */
     void takeTurn() {
+        draw(true);
         Player aP = game.turn();
-
-        // todo Log.i(ap.validPlays());
+        Play lastPlay = game.getLastPlay();
+        Card jP = lastPlay.getLastCard();
 
         Log.e(TAG, "[-] Take turn *********************[" + aP.getName() + "]**********************[-]");
 
+        // pre-process previous play actions,
+        // 1. pick cards
+        if (jP.getRank() == Rank.Two && lastPlay.getPlayAction() == PlayAction.GIVE) {
+
+            aP.give(game.getPack().deal());
+            aP.give(game.getPack().deal());
+
+            //todo add picked cards to Play
+
+            game.getPlayed().add(new Play(null, PlayAction.TAKE));
+
+            takeTurn();
+
+        }
+
+        if (jP.getRank() == Rank.Three && lastPlay.getPlayAction() == PlayAction.GIVE) {
+
+            aP.give(game.getPack().deal());
+            aP.give(game.getPack().deal());
+            aP.give(game.getPack().deal());
+
+            //todo add picked cards to Play
+
+            game.getPlayed().add(new Play(null, PlayAction.TAKE));
+
+            takeTurn();
+        }
 
         if (aP.isOpponent()) {
             Log.i(TAG,"player is Opponent, getting AI play");
             aP.playTurn(game);
-
-            draw(true);
             takeTurn();
+
         } else {
-            draw(true);
             // waiting for me to take turn
-            // todo pre-process player actions,
-            // e.g pick me cards
-            Card jP = game.getJustPlayed();
-            if (jP.getRank() == Rank.Two) {
 
-                me.give(game.getPack().deal());
-                me.give(game.getPack().deal());
-
-                takeTurn();
-            }
-            if (jP.getRank() == Rank.Three) {
-                me.give(game.getPack().deal());
-                me.give(game.getPack().deal());
-                me.give(game.getPack().deal());
-
-                takeTurn();
-            }
 
         }
     }

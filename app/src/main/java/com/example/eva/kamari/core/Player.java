@@ -2,7 +2,6 @@ package com.example.eva.kamari.core;
 
 
 import android.util.Log;
-import android.widget.Switch;
 
 import com.example.eva.kamari.UserAction;
 
@@ -81,14 +80,14 @@ public class Player {
                 switch (facing.getRank()){
                     case Ace:
                         if (facing.getSuit()==Suit.Spades){
-                            /**
-                             * An A of spades (the congress)-
-                             * It is a powerful player.
-                             * When dropped, can ask for any specific card.
-                             * For example, it can ask for a 7 of clubs.
-                             * It can be stopped by dropping an A (clubs, diamonds or hearts)
-                             * and the search reduces to a character or symbol.
-                             * i.e. it becomes either a 7 or clubs.
+                            /*
+                              An A of spades (the congress)-
+                              It is a powerful player.
+                              When dropped, can ask for any specific card.
+                              For example, it can ask for a 7 of clubs.
+                              It can be stopped by dropping an A (clubs, diamonds or hearts)
+                              and the search reduces to a character or symbol.
+                              i.e. it becomes either a 7 or clubs.
                              */
 
                             Card card =  this.requestCard(false);
@@ -97,11 +96,11 @@ public class Player {
 
 
                         }else {
-                            /**
-                             * An A of clubs, diamonds or hearts
-                             * - This can ask for a specific symbol regardless of the top dropped card.
-                             * It is known as the “game changer” since
-                             * it can switch the flow of symbols being dropped to the one asked.
+                            /*
+                              An A of clubs, diamonds or hearts
+                              - This can ask for a specific symbol regardless of the top dropped card.
+                              It is known as the “game changer” since
+                              it can switch the flow of symbols being dropped to the one asked.
                              */
                             Card card =  this.requestCard(true);
                         }
@@ -173,6 +172,9 @@ public class Player {
             give(pickedCard);
             Log.i(TAG, printCards());
 
+            game.getPlayed().add(new Play(pickedCard, this, PlayAction.TAKE));
+
+
 
 
         } else {
@@ -180,7 +182,7 @@ public class Player {
             getHand().removeAll(play);
             if (game.playTurn(play, this) /*todo game.canPlayTurn(play, this)*/) {
                 Log.i(TAG, "Can Play: " + play);
-                game.getPlayed().addAll(play);
+                game.getPlayed().add(new Play(play, this, PlayAction.GIVE));
 
             }
 
