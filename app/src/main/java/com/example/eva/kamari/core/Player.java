@@ -63,23 +63,23 @@ public class Player {
     }
 
     public void playTurn(Game game) {
-        Log.i(TAG,"playTurn");
+        Log.i(TAG, "playTurn");
 
         Card facing = game.getJustPlayed();
-        Log.i(TAG,"previous played card is "+facing);
+        Log.i(TAG, "previous played card is " + facing);
 
         // get possible card requirements and process the actions
         int action = facing.getAction();
-        Log.i(TAG,"Action is : "+String.valueOf(action));
+        Log.i(TAG, "Action is : " + String.valueOf(action));
 
         Rank rankReq = null;
         Suit suitReq = null;
 
-        switch (action){
+        switch (action) {
             case 0:// e.g 2,3 gives
-                switch (facing.getRank()){
+                switch (facing.getRank()) {
                     case Ace:
-                        if (facing.getSuit()==Suit.Spades){
+                        if (facing.getSuit() == Suit.Spades) {
                             /*
                               An A of spades (the congress)-
                               It is a powerful player.
@@ -90,26 +90,26 @@ public class Player {
                               i.e. it becomes either a 7 or clubs.
                              */
 
-                            Card card =  this.requestCard(false);
+                            Card card = this.requestCard(false);
 
                             //game.requestCard();
 
 
-                        }else {
+                        } else {
                             /*
                               An A of clubs, diamonds or hearts
                               - This can ask for a specific symbol regardless of the top dropped card.
                               It is known as the “game changer” since
                               it can switch the flow of symbols being dropped to the one asked.
                              */
-                            Card card =  this.requestCard(true);
+                            Card card = this.requestCard(true);
                         }
                         break;
                     case Two:
-                        Log.i(TAG,"player should pick 2 cards unless has A");
+                        Log.i(TAG, "player should pick 2 cards unless has A");
                         break;
                     case Three:
-                        Log.i(TAG,"player should pick 3 cards unless has A");
+                        Log.i(TAG, "player should pick 3 cards unless has A");
                         break;
                 }
 
@@ -120,9 +120,9 @@ public class Player {
                 rankReq = facing.getRank();
                 suitReq = facing.getSuit();
 
-                switch(facing.getRank()){
+                switch (facing.getRank()) {
                     case Queen:
-                       Card requested =  game.requestedCard();
+                        Card requested = game.requestedCard();
                         rankReq = requested.getRank();
                         suitReq = requested.getSuit();
                         break;
@@ -141,7 +141,6 @@ public class Player {
                 facing.getCantDealAction();
 
 
-
                 break;
 
             case 2:// Kickback
@@ -151,11 +150,11 @@ public class Player {
 
         }
 
-        Log.i(TAG,"Rank Request: "+rankReq+", Suit Request: "+suitReq);
+        Log.i(TAG, "Rank Request: " + rankReq + ", Suit Request: " + suitReq);
 
         ArrayList<Card> play = new ArrayList<>();
         for (Card card : getHand()) {
-            if (card.getRank() == rankReq||card.getSuit()==suitReq) {
+            if (card.getRank() == rankReq || card.getSuit() == suitReq) {
                 play.add(card);
 
 
@@ -164,9 +163,8 @@ public class Player {
         }
 
 
-
         if (play.isEmpty()) {
-            Log.i(TAG,"Player decided to pick");
+            Log.i(TAG, this+" decided to pick");
             Card pickedCard = game.getPack().deal();
             Log.i(TAG, "picked card: " + pickedCard);
             give(pickedCard);
@@ -175,13 +173,13 @@ public class Player {
             game.getPlayed().add(new Play(pickedCard, this, PlayAction.TAKE));
 
 
-
-
         } else {
-            Log.i(TAG,"Player decided to deal ");
+            Log.i(TAG, this+" decided to deal ");
             getHand().removeAll(play);
             if (game.playTurn(play, this) /*todo game.canPlayTurn(play, this)*/) {
                 Log.i(TAG, "Can Play: " + play);
+
+
                 game.getPlayed().add(new Play(play, this, PlayAction.GIVE));
 
             }
@@ -205,9 +203,9 @@ public class Player {
     }
 
     private Card requestCard(boolean onlySymbols) {
-        if (isOpponent()){
-            return new Card(Rank.Seven,Suit.Clubs);
-        }else {
+        if (isOpponent()) {
+            return new Card(Rank.Seven, Suit.Clubs);
+        } else {
             return userAction.onRequestCard();
 
         }
