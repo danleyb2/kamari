@@ -14,13 +14,22 @@ import android.widget.TextView;
 import com.example.eva.kamari.core.Card;
 import com.example.eva.kamari.core.Game;
 import com.example.eva.kamari.core.MyCard;
+import com.example.eva.kamari.core.Pack;
 import com.example.eva.kamari.core.Play;
 import com.example.eva.kamari.core.PlayAction;
 import com.example.eva.kamari.core.Player;
 import com.example.eva.kamari.core.PlayerType;
 import com.example.eva.kamari.core.Rank;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.DiskLogAdapter;
+import com.orhanobut.logger.FormatStrategy;
+import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.PrettyFormatStrategy;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SinglePlayer extends AppCompatActivity {
 
@@ -35,6 +44,14 @@ public class SinglePlayer extends AppCompatActivity {
     private ImageView imageViewDeck;
     private CardsAdapter mAdapter;
 
+    static {
+        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+                .showThreadInfo(false)
+                .methodCount(0)
+                .tag("GP")
+                .build();
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +63,8 @@ public class SinglePlayer extends AppCompatActivity {
         textViewOpCards = (TextView) findViewById(R.id.textViewOpCards);
         imageViewField = (ImageView) findViewById(R.id.imageViewField);
         imageViewDeck = (ImageView) findViewById(R.id.imageViewDeck);
+
+        // logger();
 
         initGame();
 
@@ -86,18 +105,85 @@ public class SinglePlayer extends AppCompatActivity {
 
     }
 
+    void logger(){
+        Log.d("Tag", "I'm a log which you don't see easily, hehe");
+        Log.d("json content", "{ \"key\": 3, \n \"value\": something}");
+        Log.d("error", "There is a crash somewhere or any warning");
+
+        Logger.addLogAdapter(new AndroidLogAdapter());
+        Logger.d("message");
+
+        Logger.clearLogAdapters();
+
+
+        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+                .showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
+                .methodCount(0)         // (Optional) How many method line to show. Default 2
+                .methodOffset(3)        // (Optional) Skips some method invokes in stack trace. Default 5
+//        .logStrategy(customLog) // (Optional) Changes the log strategy to print out. Default LogCat
+                .tag("My custom tag")   // (Optional) Custom tag for each log. Default PRETTY_LOGGER
+                .build();
+
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
+
+        Logger.addLogAdapter(new AndroidLogAdapter() {
+            @Override public boolean isLoggable(int priority, String tag) {
+                return BuildConfig.DEBUG;
+            }
+        });
+
+        Logger.addLogAdapter(new DiskLogAdapter());
+
+
+        Logger.w("no thread info and only 1 method");
+
+        Logger.clearLogAdapters();
+        formatStrategy = PrettyFormatStrategy.newBuilder()
+                .showThreadInfo(false)
+                .methodCount(0)
+                .build();
+
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
+        Logger.i("no thread info and method info");
+
+        Logger.t("tag").e("Custom tag for only one use");
+
+        Logger.json("{ \"key\": 3, \"value\": something}");
+
+        Logger.d(Arrays.asList("foo", "bar"));
+
+        Map<String, String> map = new HashMap<>();
+        map.put("key", "value");
+        map.put("key1", "value2");
+
+        Logger.d(map);
+
+        Logger.clearLogAdapters();
+        formatStrategy = PrettyFormatStrategy.newBuilder()
+                .showThreadInfo(false)
+                .methodCount(0)
+                .tag("MyTag")
+                .build();
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
+
+        Logger.w("my log message with my tag");
+    }
+
+
 
     void draw(boolean isUpdate) {
-        Log.i(TAG, "[-] Drawing game     ***        [-]");
 
-        Log.i(TAG, "me " + me.dumpString());
+        StringBuilder gameString = new StringBuilder("[-] Drawing game     ***        [-]\n")
+                .append("me ").append(me.dumpString()).append("\n");
 
         //TODO draw player
         // for now it's just one play
         ArrayList<Player> opponents = game.getOpponents();
         for (Player player : opponents) {
-            Log.i(TAG, "\topponent " + player.dumpString());
+            gameString.append("\topponent ").append(player.dumpString());
         }
+
+        Logger.i(gameString.toString());
 
         Player opponent = opponents.get(0);
         textViewOpName.setText(opponent.getName());
@@ -141,58 +227,33 @@ public class SinglePlayer extends AppCompatActivity {
      * This is the game loop, a recursive calls that stops then the turn player is not COMP
      */
     void takeTurn() {
-        draw(true);
-        Player aP = game.turn();
-        Play lastPlay = game.getLastPlay();
-        Card jP = lastPlay.getLastCard();
+        // -------------------
 
-        Log.e(TAG, "[-] Take turn *********************[" + aP.getName() + "]**********************[-]");
+        // playerTurnCb
+        // game.takeTurn(playerTurn,drawCb,playerQuestionCb,playerPickCb);
 
-        // pre-process previous play actions,
-        // 1. pick cards
-        if (jP.getRank() == Rank.Two && lastPlay.getPlayAction() == PlayAction.GIVE) {
+        // -----------------
+        game.takeTurn(new Game.PlayCb(){
+            @Override
+            public void onDraw(Game game) {
+                draw(true);
+            }
 
-            aP.give(game.getPack().deal());
-            aP.give(game.getPack().deal());
+            @Override
+            public void playerTurn(Game game) {
 
-            //todo add picked cards to Play
+            }
+        });
 
-            game.getPlayed().add(new Play(null, PlayAction.TAKE));
-
-            takeTurn();
-
-        }
-
-        if (jP.getRank() == Rank.Three && lastPlay.getPlayAction() == PlayAction.GIVE) {
-
-            aP.give(game.getPack().deal());
-            aP.give(game.getPack().deal());
-            aP.give(game.getPack().deal());
-
-            //todo add picked cards to Play
-
-            game.getPlayed().add(new Play(null, PlayAction.TAKE));
-
-            takeTurn();
-        }
-
-        if (aP.isOpponent()) {
-            Log.i(TAG,"player is Opponent, getting AI play");
-            aP.playTurn(game);
-            takeTurn();
-
-        } else {
-            // waiting for me to take turn
-
-
-        }
+        // draw(true);
     }
 
 
     void initGame() {
-        Log.i(TAG, "[-]----------------------------------------------------------------------");
-        Log.i(TAG, "[-]\t\t\t  ... KAMARI ....");
-        Log.i(TAG, "[-] Welcome to KAMARI ... ##################################### initializing [-]");
+        Logger.t("GP").i("[-]----------------------------------------------------------------------\n"+
+                "[-]\t\t\t  ... KAMARI ....\n"+
+                "[-] Welcome to KAMARI ... ##################################### initializing [-]\n");
+
         game = new Game();
 
         me = game.addPlayer("danleyb2", false);
@@ -210,7 +271,7 @@ public class SinglePlayer extends AppCompatActivity {
 
         game.addPlayer(new Player("COMP", PlayerType.CPU, true));
 
-        game.init();
+        game.init(new Pack(),true);
         draw(false);
         takeTurn();
 
