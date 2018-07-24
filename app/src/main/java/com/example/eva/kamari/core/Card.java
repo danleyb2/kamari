@@ -1,10 +1,12 @@
 package com.example.eva.kamari.core;
 
+import android.support.annotation.NonNull;
+
 /**
  * Created by danleyb2 on 8/12/17.
  */
 
-public class Card {
+public class Card implements Comparable<Card> {
 
     private Rank rank;
     private Suit suit;
@@ -126,5 +128,10 @@ public class Card {
 
     public void getCantDealAction() {
 
+    }
+
+    @Override
+    public int compareTo(@NonNull Card card) {
+        return this.suit == card.suit && this.rank == card.rank?1:0;
     }
 }
