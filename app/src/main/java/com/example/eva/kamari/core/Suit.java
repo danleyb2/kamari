@@ -8,5 +8,17 @@ public enum Suit {
     Clubs,
     Diamonds,
     Hearts,
-    Spades
+    Spades;
+
+    @Override
+    public String toString() {
+        // ♤,♥,♢,♧
+        switch (this){
+            case Clubs:return "♧";
+            case Diamonds:return "♢";
+            case Hearts:return "♥";
+            case Spades:return "♤";
+        }
+        return "♤,♥,♢,♧";
+    }
 }
