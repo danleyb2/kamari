@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/a"
-    tools:context="com.example.eva.kamari.SinglePlayer">
+
+    tools:context="dev.danleyb2.kamari.SinglePlayer">
 
 
     <RelativeLayout
         android:id="@+id/compCards"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="#99669900"
+        android:background="#fafafa"
         android:orientation="horizontal"
         android:weightSum="1"
         android:layout_alignParentTop="true"

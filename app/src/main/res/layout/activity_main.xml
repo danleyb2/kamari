@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/a"
-    tools:context="com.example.eva.kamari.MainActivity">
+    tools:context="dev.danleyb2.kamari.MainActivity">
 
 
     <TextView

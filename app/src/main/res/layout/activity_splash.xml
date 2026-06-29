@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/kamari"
-    tools:context="com.example.eva.kamari.Splash">
+    tools:context="dev.danleyb2.kamari.Splash">
 
 
 </RelativeLayout>
