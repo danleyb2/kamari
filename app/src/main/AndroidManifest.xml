@@ -14,7 +14,8 @@
         <activity android:name=".MainActivity" />
         <activity
             android:theme="@style/NoActionBar.FullScreen"
-            android:name=".SinglePlayer">
+            android:name=".SinglePlayer"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
