@@ -1,6 +1,6 @@
 package dev.danleyb2.eva.kamari;
 
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import dev.danleyb2.kamari.core.Game;
 import dev.danleyb2.kamari.core.Pack;

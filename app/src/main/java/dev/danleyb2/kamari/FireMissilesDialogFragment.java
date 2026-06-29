@@ -3,8 +3,8 @@ package dev.danleyb2.kamari;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.app.AlertDialog;
 
 /**
  * Created by danleyb2 on 9/4/17.

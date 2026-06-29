@@ -1,6 +1,6 @@
 package dev.danleyb2.kamari.core;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by danleyb2 on 8/12/17.

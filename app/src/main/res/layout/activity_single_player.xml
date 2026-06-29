@@ -87,7 +87,7 @@
         android:background="#99669900"
         android:orientation="horizontal">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_cards"
             android:scrollbars="vertical"
             android:layout_width="match_parent"

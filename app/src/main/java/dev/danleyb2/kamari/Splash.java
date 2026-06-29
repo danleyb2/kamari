@@ -1,7 +1,7 @@
 package dev.danleyb2.kamari;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class Splash extends AppCompatActivity {
